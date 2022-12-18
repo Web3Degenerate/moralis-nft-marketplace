@@ -1,0 +1,84 @@
+/*  Cat Body */
+#body{
+    background-color: rgb(255, 234, 163);
+    width: 200px;
+    height: 200px;
+    /* border-radius: 50% 20% 20% 52%; 
+    https://i.imgur.com/T8Vns6s.png
+    */
+    border-radius: 50%;
+}
+
+/* Style for Eyes wrapper div */
+
+.eyes{
+    /* position relative serves as an anchor */
+    position: relative; 
+    /* How far from the top of the body */
+    top: 30px;
+    display: flex; /* on parent wrapper moves child .eye vert => horizontal */
+}
+
+/* Individual Eye divs */
+.eye{
+    background-color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    /* display: flex;  
+    Move to parent (.eyes) 
+    This is modern way deal with positioning*/
+
+    /* Add space between eye divs */
+    margin: 25px;
+
+    /* Add position relative to anchor pupils */
+    position: relative; /* relative to children elements? */
+}
+
+/* Pupil Divs inside Eye Divs */
+.pupils{
+    background-color: black;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    /*  Standard Position top 0, left 0 (upper left corner) 
+        .eye now anchors pupil (relative) so we can make pupils
+        position: absolute and add top and left px
+        (anchored child element, nested div)
+    */
+    position: absolute;
+    top: 8px;
+    left: 8px;
+
+}
+
+/* Add Ears Wrapper Div and Left and Right Ear Styling Divs */
+.ears{
+    /* Set Wrapper Div to Anchor Children Left & Right .ear class divs */
+    position: relative;
+    
+    /* Display Flex did move the child .ear side by side: 
+    https://i.imgur.com/60vcWI5.png
+    display: flex; /* on parent wrapper moves child .ear vert => horizontal */
+    
+}
+
+.ear{
+    border-radius: 90px 0px 90px 0px; /* Football Shape */
+    background-color: rgb(255, 234, 163);
+    height: 100px; 
+    width: 100px;
+    /* position: absolute; Remove so we can style, lay everything out */
+    position: absolute; 
+}
+
+/* To target a class after the space: class="ear right_ear" */
+.right_ear{
+    transform: scale(1,-1) rotate(15deg);
+    left: 0;
+}
+
+.left_ear{
+    left: 100px;
+}
