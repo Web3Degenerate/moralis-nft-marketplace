@@ -1,0 +1,70 @@
+$ truffle migrate
+
+Compiling your contracts...
+===========================
+> Compiling .\contracts\IERC721.sol
+> Artifacts written to C:\Users\IanBates\Documents\BlockChain Dev\0a_Moralis_2022_CM\nft-marketplace\academy-kitties-template\academy-kitties-template\build\contracts
+> Compiled successfully using:
+   - solc: 0.5.16+commit.9c3226ce.Emscripten.clang
+
+
+
+Starting migrations...
+======================
+> Network name:    'ganache'
+> Network id:      5777
+> Block gas limit: 6721975 (0x6691b7)
+
+
+1_initial_migration.js
+======================
+
+   Deploying 'Migrations'
+   ----------------------
+   > transaction hash:    0xb8ff33e882436ee876491162dd09ab866ea22099bce4956f628ece43b3f914d5
+   > Blocks: 0            Seconds: 0
+   > contract address:    0xe824a9ef6b3ACD5a8d0F312f5dC4B0eC71FcBd64
+   > block number:        1
+   > block timestamp:     1672040036
+   > account:             0xaB78671458d54E6D025f6a6c67e0403DA655dED3
+   > balance:             99.99616114
+   > gas used:            191943 (0x2edc7)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00383886 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.00383886 ETH
+
+
+2_token_migration.js
+====================
+
+   Deploying 'Kittycontract'
+   -------------------------
+   > transaction hash:    0xe01deafc7a325515ce4851ccc5e9655ca648a4b1838c97a1809ecb8131278927
+   > Blocks: 0            Seconds: 0
+   > contract address:    0x1D4D2f4BfbD771dadCDE5aE4B23309a9962E43a3
+   > block number:        3
+   > block timestamp:     1672040037
+   > account:             0xaB78671458d54E6D025f6a6c67e0403DA655dED3
+   > balance:             99.98640472
+   > gas used:            445483 (0x6cc2b)
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00890966 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.00890966 ETH
+
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.01274852 ETH
