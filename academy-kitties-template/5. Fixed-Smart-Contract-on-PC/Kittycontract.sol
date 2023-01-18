@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.7.0 <0.9.0; // pragma solidity ^0.5.12;
-
+pragma solidity >=0.5.16 <0.9.0;  // pragma solidity ^0.5.12; //Hashlips prefers ^0.8.0 (this version & up) https://youtu.be/sngKPYfUgkc?t=1350
+    // Error: Truffle is currently using solc 0.5.16, but one or more of your contracts specify "pragma solidity >=0.7.0 <0.9.0".
+    //Please update your truffle config or pragma statement(s).
+    //(See https://trufflesuite.com/docs/truffle/reference/configuration#compiler-configuration for information on
+    //configuring Truffle to use a specific solc compiler version.)
 
 import "./IERC721.sol";
 // import ownable contract
@@ -80,13 +83,17 @@ contract Kittycontract is IERC721, Ownable {
         /*Added Kitty from struct (3:13): https://academy.moralis.io/lessons/create-kitty-function */
         Kitty memory _kitty = Kitty({   
             genes: _genes,
-            birthTime: uint64(now),
+            // birthTime: uint64(now),  // Per Mac VS Code Error Message
+            birthTime: uint64(block.timestamp),
             mumId: uint32(_mumId),
             dadId: uint32(_dadId),
             generation: uint16(_generation)
         });
 
-        uint256 newKittenId = kitties.push(_kitty) -1;
+        // uint256 newKittenId = kitties.push(_kitty) -1; //Per: https://ethereum.stackexchange.com/questions/89792/typeerror-different-number-of-components-either-side-of-equation
+        kitties.push(_kitty);
+        uint256 newKittenId = kitties.length - 1;
+
 
         emit Birth(_owner, newKittenId, _mumId, _dadId, _genes); /*Added event (8:22): https://academy.moralis.io/lessons/create-kitty-function */
 
