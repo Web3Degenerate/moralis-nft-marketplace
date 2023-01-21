@@ -70,3 +70,50 @@ _operatorApprovals[MYADDR][LISA_ADDR] = true;
 This just means you are [inheriting from a contract and you have not implemented all of the functions required per this Stack article](https://ethereum.stackexchange.com/questions/83267/contract-should-be-marked-as-abstract).
 
 
+
+
+## Fulfillment Solution
+
+[ERC721 Fulfillment Approval Solution](https://academy.moralis.io/lessons/erc721-fulfillment-approval-solution).
+
+Four Approval Functions: 
+```js
+    function approve(address _to, uint256 _tokenId) public {
+        require(_owns(msg.sender, _tokenId)); //sender owns token
+
+        _approve(_tokenId, _to); //our own internal _approve function below
+        // approve(_tokenId, _to);
+        emit Approval(msg.sender, _to, _tokenId);  
+    }
+
+    function setApprovalForAll(address operator, bool approved) public {
+        require(operator != msg.sender);
+
+        _operatorApprovals[msg.sender][operator] = approved; //internal fn below
+        emit ApprovalForAll(msg.sender, operator, approved); 
+    }
+
+    function getApproved(uint256 tokenId) public view returns (address) {
+        require(tokenId < kitties.length); //Token must exist
+
+        return kittyIndexToApproved[tokenId]; 
+    }
+
+    function isApprovedForAll(address _owner, address _operator) external view returns (bool) {
+        return _operatorApprovals[_owner][_operator]; //his removed underscore
+    }
+
+```
+
+
+Add our own **internal function** to handle the **_approve** functionality: 
+(Down at bottom of contract with our other internal functions)
+```js
+    function _approve(uint256 _tokenId, address _approved) internal {
+        kittyIndexToApproved[_tokenId] = _approved;
+    }
+
+```
+
+**TO DO**: Need to create the internal `_operatorApprovals` function in _Kittycontract.sol_
+

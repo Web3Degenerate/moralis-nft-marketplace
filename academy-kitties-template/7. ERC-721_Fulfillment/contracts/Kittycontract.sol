@@ -44,6 +44,33 @@ contract Kittycontract is IERC721, Ownable {
     uint256 public gen0Counter;
 
 
+// Approval function solutions from: https://academy.moralis.io/lessons/erc721-fulfillment-approval-solution
+    function approve(address _to, uint256 _tokenId) public {
+        require(_owns(msg.sender, _tokenId)); //sender owns token
+
+        _approve(_tokenId, _to); //our own internal _approve function below
+        // approve(_tokenId, _to);
+        emit Approval(msg.sender, _to, _tokenId);  
+    }
+
+    function setApprovalForAll(address operator, bool approved) public {
+        require(operator != msg.sender);
+
+        _operatorApprovals[msg.sender][operator] = approved; //internal fn below
+        emit ApprovalForAll(msg.sender, operator, approved); 
+    }
+
+    function getApproved(uint256 tokenId) public view returns (address) {
+        require(tokenId < kitties.length); //Token must exist
+
+        return kittyIndexToApproved[tokenId]; 
+    }
+
+    function isApprovedForAll(address _owner, address _operator) external view returns (bool) {
+        return _operatorApprovals[_owner][_operator]; //his removed underscore
+    }
+
+
 /*GetKitty Solution added getKitty: https://academy.moralis.io/lessons/getkitty-solution  */
     function getKitty(uint256 _id) external view returns (
         uint256 genes,
@@ -153,6 +180,10 @@ contract Kittycontract is IERC721, Ownable {
 
     function _owns(address _claimant, uint256 _tokenId) internal view returns (bool) {
         return kittyIndexToOwner[_tokenId] == _claimant; 
+    }
+//Internal function to handle the approval process (1:35): https://academy.moralis.io/lessons/erc721-fulfillment-approval-solution
+    function _approve(uint256 _tokenId, address _approved) internal {
+        kittyIndexToApproved[_tokenId] = _approved;
     }
 
 
