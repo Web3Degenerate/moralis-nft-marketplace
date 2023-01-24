@@ -115,5 +115,58 @@ Add our own **internal function** to handle the **_approve** functionality:
 
 ```
 
-**TO DO**: Need to create the internal `_operatorApprovals` function in _Kittycontract.sol_
+**TO DO**: Need to create the internal `_approvedFor` function in _Kittycontract.sol_ 
+
+`-approvedFor` at (2:02)[https://academy.moralis.io/lessons/erc721-fulfillment-transferfrom-assignment-solution].
+```js
+// _approvedFor solution at (2:02): https://academy.moralis.io/lessons/erc721-fulfillment-transferfrom-assignment-solution
+    function _approvedFor(address _claimant, uint256 _tokenId) internal view returns (bool) {
+        return kittyIndexToApproved[_tokenId] == _claimant;
+    }
+
+```
+
+[git pull origin](https://teamtreehouse.com/library/introduction-to-git/pulling-changes).
+
+
+## Add three more solidity functions (1) transferFrom, (2) safeTransfer and (3) safeTransferFrom
+
+[Assignment - ERC721 Fulfillment transferFrom](https://academy.moralis.io/lessons/assignment-erc721-fulfillment-transferfrom).
+
+Added these three functions to the interface and Kittycontract.sol: 
+
+```js
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes calldata data) external {
+        
+    }
+
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId) external {
+
+    }
+
+    function transferFrom(address _from, address _to, uint256 _tokenId) external {
+
+    }
+
+```
+
+### transferFrom
+
+[ERC721 Fulfillment - transferFrom Assignment solution](https://academy.moralis.io/lessons/assignment-erc721-fulfillment-transferfrom).
+
+
+
+### safeTransfer
+
+[safeTransfer Explained (chalkboard only)](https://academy.moralis.io/lessons/safetransfer-explained).
+- (8:22) - function `onERC721Received()` standard required to confirm 721 compliance and receive 721 tokens.
+    - Must return specific value `0x150b7a02`
+
+[OpenZeppelin github on ERC721.sol and onERC721Received() function](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol).
+
+`bytes4 private constant _ERC721_RECEIVED = ox150b7a02;` - _on his version (??)_
+
+
+
+[Assignment - safeTransfer Implementation]().
 

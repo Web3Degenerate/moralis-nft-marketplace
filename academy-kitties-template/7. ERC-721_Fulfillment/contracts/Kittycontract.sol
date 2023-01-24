@@ -44,6 +44,33 @@ contract Kittycontract is IERC721, Ownable {
     uint256 public gen0Counter;
 
 
+//Safe Transfer from: https://academy.moralis.io/lessons/assignment-erc721-fulfillment-transferfrom
+
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes calldata data) external {
+
+    }
+
+
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId) external {
+
+    }
+
+
+    function transferFrom(address _from, address _to, uint256 _tokenId) external {
+        require(_to != address(0)); //check to address is not addy zero.
+
+            // check sender is owner    or sender has approval for tokenId   or msg.sender is an operator for from  (1:05)
+        require(msg.sender == _from || _approvedFor(msg.sender, _tokenId) || isApprovedForAll(_from, msg.sender)); 
+
+        require(_owns(_from, _tokenId)); 
+
+        require(_tokenId < kitties.length); 
+
+         _transfer(_from, _to, _tokenId);
+    }
+
+
+
 // Approval function solutions from: https://academy.moralis.io/lessons/erc721-fulfillment-approval-solution
     function approve(address _to, uint256 _tokenId) public {
         require(_owns(msg.sender, _tokenId)); //sender owns token
@@ -66,9 +93,14 @@ contract Kittycontract is IERC721, Ownable {
         return kittyIndexToApproved[tokenId]; 
     }
 
-    function isApprovedForAll(address _owner, address _operator) external view returns (bool) {
+// _CHANGE isApprovedForAll from external to PUBLIC removed this error(?)
+//VS error: Undeclared identifier. "isApprovedForAll" is not (or not yet) visible at this point. [63, 78]
+// https://ethereum.stackexchange.com/questions/66138/declarationerror-undeclared-identifier-value-is-not-or-not-yet-visible-at
+    // function isApprovedForAll(address _owner, address _operator) external view returns (bool) { //make external to public
+    function isApprovedForAll(address _owner, address _operator) public view returns (bool) {
         return _operatorApprovals[_owner][_operator]; //his removed underscore
     }
+
 
 
 /*GetKitty Solution added getKitty: https://academy.moralis.io/lessons/getkitty-solution  */
@@ -185,6 +217,9 @@ contract Kittycontract is IERC721, Ownable {
     function _approve(uint256 _tokenId, address _approved) internal {
         kittyIndexToApproved[_tokenId] = _approved;
     }
-
+// _approvedFor solution at (2:02): https://academy.moralis.io/lessons/erc721-fulfillment-transferfrom-assignment-solution
+    function _approvedFor(address _claimant, uint256 _tokenId) internal view returns (bool) {
+        return kittyIndexToApproved[_tokenId] == _claimant;
+    }
 
 } /*end of Kittycontract */
