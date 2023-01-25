@@ -168,5 +168,20 @@ Added these three functions to the interface and Kittycontract.sol:
 
 
 
-[Assignment - safeTransfer Implementation]().
+[Assignment - safeTransfer Implementation](https://academy.moralis.io/lessons/assignment-safetransfer-implementation).
+
+
+Two functions called safeTransferFrom which both use internal `_safeTransfer`.
+
+
+**Steps Followed**
+
+1. create internal `_safeTransfer` function
+2. create internal `_checkERC721Support` function (bottom)
+    - checkERC721Support will use new internal function
+3. create internal `_isContract(_to)`
+4. Create `IERC721Receiver.sol`
+
+
+Pick up at (13:56)
 

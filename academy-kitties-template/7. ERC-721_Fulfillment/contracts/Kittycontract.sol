@@ -10,12 +10,15 @@ import "./IERC721.sol";
 // import ownable contract
 import "./Ownable.sol";     /* (2:05): https://academy.moralis.io/lessons/solution-new-get-kitty-assignment */
 
+import "./IERC721Receiver.sol"; //IERC721Receiver
 
 contract Kittycontract is IERC721, Ownable {
 
     uint256 public constant CREATION_LIMIT_GEN0 = 10; 
     string public constant name = "DegenKitties";
     string public constant symbol = "DK";
+    bytes4 internal constant MAGIC_ERC721_RECEIVED = bytes4(keccak256("onERC721Received(address,address,uint256,bytes)")); // bytes4 constant (8:10) https://academy.moralis.io/lessons/assignment-safetransfer-implementation
+// bytes4 internal constant = bytes4(keccak256("onERC721Received(address,address,uint256,bytes)")); 
 
      /*Added event (7:10): https://academy.moralis.io/lessons/create-kitty-function */
      event Birth(address owner, uint256 kittenId, uint256 mumId, uint256 dadId, uint256 genes);
@@ -55,6 +58,13 @@ contract Kittycontract is IERC721, Ownable {
 
     }
 
+//internal _safeTransfer in https://academy.moralis.io/lessons/assignment-safetransfer-implementation
+                    // data is optional parameter we can send data to whoever we transfer to (1:05)
+    function _safeTransfer(address _from, address _to, uint256 _tokenId, bytes memory _data) internal {
+        _transfer(_from, _to, _tokenId);
+        require( _checkERC721Support(_from, _to, _tokenId, _data) ); 
+
+    }
 
     function transferFrom(address _from, address _to, uint256 _tokenId) external {
         require(_to != address(0)); //check to address is not addy zero.
@@ -213,13 +223,47 @@ contract Kittycontract is IERC721, Ownable {
     function _owns(address _claimant, uint256 _tokenId) internal view returns (bool) {
         return kittyIndexToOwner[_tokenId] == _claimant; 
     }
+
 //Internal function to handle the approval process (1:35): https://academy.moralis.io/lessons/erc721-fulfillment-approval-solution
     function _approve(uint256 _tokenId, address _approved) internal {
         kittyIndexToApproved[_tokenId] = _approved;
     }
+
 // _approvedFor solution at (2:02): https://academy.moralis.io/lessons/erc721-fulfillment-transferfrom-assignment-solution
     function _approvedFor(address _claimant, uint256 _tokenId) internal view returns (bool) {
         return kittyIndexToApproved[_tokenId] == _claimant;
     }
 
-} /*end of Kittycontract */
+
+    function _checkERC721Support(address _from, address _to, uint256 _tokenId, bytes memory _data) internal returns (bool){
+        if(_isContract(_to)){
+            //if NOT a smart contract (code size > 0), return true
+            return true; //exits fn here (4:20) https://academy.moralis.io/lessons/assignment-safetransfer-implementation
+        }
+
+                        
+                        //execute onERC721Received function
+                        //How call external contract only know (1) addy and (2) one of its functions
+                        // 6th min: https://academy.moralis.io/lessons/assignment-safetransfer-implementation
+        // FORMAT: Contract(_to).onERC721Received()  //define the function header we need (onERC721Received())    
+// MAKE THE Call onERC721Received                             
+        bytes4 returnData = IERC721Receiver(_to).onERC721Received(msg.sender, _to, _tokenId, _data);
+// CHECK THE RETURN VALUE
+        return returnData == MAGIC_ERC721_RECEIVED; // (10:48) if not, throws error: https://academy.moralis.io/lessons/assignment-safetransfer-implementation
+
+    }
+
+
+//  (11:34) https://academy.moralis.io/lessons/assignment-safetransfer-implementation  
+    function _isContract(address _to) view internal returns (bool) {
+        //if smart contract, code size greater zero.  Wallet zero? 
+        uint32 size; 
+        //Assembly code: 
+        assembly{
+            size := extcodesize(_to) //gets size and saves to our uint32 var
+        }
+        return size > 0; //true if bigger, false if not, meaning not a smart contract.
+    }
+
+
+} /*end of Kittycontract */ 
