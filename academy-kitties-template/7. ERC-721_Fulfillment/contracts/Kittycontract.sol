@@ -58,6 +58,8 @@ contract Kittycontract is IERC721, Ownable {
 
     }
 
+    
+
 //internal _safeTransfer in https://academy.moralis.io/lessons/assignment-safetransfer-implementation
                     // data is optional parameter we can send data to whoever we transfer to (1:05)
     function _safeTransfer(address _from, address _to, uint256 _tokenId, bytes memory _data) internal {

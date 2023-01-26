@@ -185,3 +185,29 @@ Two functions called safeTransferFrom which both use internal `_safeTransfer`.
 
 Pick up at (13:56)
 
+We have to **truffle compile** our changes to see if we have any errors and move on. 
+
+MAC required [install truffle in cmd line with npm](https://trufflesuite.com/docs/truffle/how-to/install/).
+
+**ISSUE WITH IMPORTING NEW IERC721Receiver.sol**
+
+```js
+truffle compile
+
+Compiling your contracts...
+===========================
+> Compiling ./contracts/IERC721.sol
+> Compiling ./contracts/Kittycontract.sol
+> Compiling ./contracts/Migrations.sol
+> Compiling ./contracts/Ownable.sol
+
+project:/contracts/Kittycontract.sol:13:1: ParserError: Source "project:/contracts/IERC721Receiver.sol" not found
+import "./IERC721Receiver.sol"; //IERC721Receiver
+^-----------------------------^
+
+Compilation failed. See above.
+Truffle v5.7.3 (core: 5.7.3)
+Node v19.4.0
+
+```
+
