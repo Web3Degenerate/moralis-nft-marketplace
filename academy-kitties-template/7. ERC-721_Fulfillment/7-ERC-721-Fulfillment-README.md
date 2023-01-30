@@ -211,3 +211,75 @@ Node v19.4.0
 
 ```
 
+**ERROR SOLUTION** - we saved the IERC721Receiver.sol as a `.sol` file and not `solidity` when creating it at BGBH waiting room on 1.24.23.
+
+
+
+**Compile Error**
+
+[Resolved at (16:27)](https://academy.moralis.io/lessons/assignment-safetransfer-implementation).
+
+**Compiler recommends we Remove the unused** `address _from` parameter from **_checkERC721Support** function. 
+
+However the _real issue was with our misuse of the from parameter_
+
+```js
+Compiling ./contracts/IERC721Receiver.sol
+> Compiling ./contracts/Kittycontract.sol
+> Compiling ./contracts/Migrations.sol
+> Compiling ./contracts/Ownable.sol
+> Compilation warnings encountered:
+
+    project:/contracts/Kittycontract.sol:240:34: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+    function _checkERC721Support(address _from, address _to, uint256 _tokenId, bytes memory _data) internal returns (bool){
+                                 ^-----------^
+
+> Artifacts written to /Users/web3dev/Documents/blockchain-dev-projects/filip-nft-marketplace/crypto-kitties-github/moralis-nft-marketplace/academy-kitties-template/7. ERC-721_Fulfillment/build/contracts
+> Compiled successfully using:
+   - solc: 0.5.16+commit.9c3226ce.Emscripten.clang
+
+```
+
+
+So our NEW `_checkERC721Support` function becomes: 
+
+```js
+// At (16:27) we remove `address _from` parameter throwing error in the `truffle compile`: 
+// https://academy.moralis.io/lessons/assignment-safetransfer-implementation
+    function _checkERC721Support(address _from, address _to, uint256 _tokenId, bytes memory _data) internal returns (bool){
+        if(_isContract(_to)){
+            //if NOT a smart contract (code size > 0), return true
+            return true; //exits fn here (4:20) https://academy.moralis.io/lessons/assignment-safetransfer-implementation
+        }
+
+        //Actually use the _from paramter now
+        // bytes4 returnData = IERC721Receiver(_to).onERC721Received(msg.sender, _to, _tokenId, _data);
+        bytes4 returnData = IERC721Receiver(_to).onERC721Received(msg.sender, _from, _tokenId, _data);
+// CHECK THE RETURN VALUE
+        // (10:48) if not, throws error: https://academy.moralis.io/lessons/assignment-safetransfer-implementation
+        return returnData == MAGIC_ERC721_RECEIVED; 
+
+    }
+
+
+```
+
+**AND NOW OUR TRUFFLE COMPILE IS SUCCESSFUL**
+
+```js
+truffle compile
+
+Compiling your contracts...
+===========================
+> Compiling ./contracts/Kittycontract.sol
+> Artifacts written to /Users/web3dev/Documents/blockchain-dev-projects/filip-nft-marketplace/crypto-kitties-github/moralis-nft-marketplace/academy-kitties-template/7. ERC-721_Fulfillment/build/contracts
+> Compiled successfully using:
+   - solc: 0.5.16+commit.9c3226ce.Emscripten.clang
+
+```
+
+
+
+**NEXT STEPS**: Implement our public functions specificed in our interface: 
+
+[start here](https://academy.moralis.io/lessons/safetransferfrom-assignment-solution).

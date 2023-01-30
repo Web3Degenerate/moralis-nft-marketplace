@@ -6,7 +6,7 @@ pragma solidity >=0.5.16 <0.9.0;  // pragma solidity ^0.5.12; //Hashlips prefers
     //(See https://trufflesuite.com/docs/truffle/reference/configuration#compiler-configuration for information on
     //configuring Truffle to use a specific solc compiler version.)
 
-import "./IERC721.sol";
+import "./IERC721.sol"; 
 // import ownable contract
 import "./Ownable.sol";     /* (2:05): https://academy.moralis.io/lessons/solution-new-get-kitty-assignment */
 
@@ -58,7 +58,7 @@ contract Kittycontract is IERC721, Ownable {
 
     }
 
-    
+
 
 //internal _safeTransfer in https://academy.moralis.io/lessons/assignment-safetransfer-implementation
                     // data is optional parameter we can send data to whoever we transfer to (1:05)
@@ -237,6 +237,7 @@ contract Kittycontract is IERC721, Ownable {
     }
 
 
+// At (16:27) we remove `address _from` parameter throwing error in the `truffle compile`: https://academy.moralis.io/lessons/assignment-safetransfer-implementation
     function _checkERC721Support(address _from, address _to, uint256 _tokenId, bytes memory _data) internal returns (bool){
         if(_isContract(_to)){
             //if NOT a smart contract (code size > 0), return true
@@ -249,7 +250,8 @@ contract Kittycontract is IERC721, Ownable {
                         // 6th min: https://academy.moralis.io/lessons/assignment-safetransfer-implementation
         // FORMAT: Contract(_to).onERC721Received()  //define the function header we need (onERC721Received())    
 // MAKE THE Call onERC721Received                             
-        bytes4 returnData = IERC721Receiver(_to).onERC721Received(msg.sender, _to, _tokenId, _data);
+        // bytes4 returnData = IERC721Receiver(_to).onERC721Received(msg.sender, _to, _tokenId, _data); fixed (16:27): https://academy.moralis.io/lessons/assignment-safetransfer-implementation
+        bytes4 returnData = IERC721Receiver(_to).onERC721Received(msg.sender, _from, _tokenId, _data);
 // CHECK THE RETURN VALUE
         return returnData == MAGIC_ERC721_RECEIVED; // (10:48) if not, throws error: https://academy.moralis.io/lessons/assignment-safetransfer-implementation
 
