@@ -282,4 +282,33 @@ Compiling your contracts...
 
 **NEXT STEPS**: Implement our public functions specificed in our interface: 
 
-[start here](https://academy.moralis.io/lessons/safetransferfrom-assignment-solution).
+[safeTransferFrom Solution](https://academy.moralis.io/lessons/safetransferfrom-assignment-solution).
+
+
+[00:34 - makes _isApprovedOrOwner function](https://academy.moralis.io/lessons/safetransferfrom-assignment-solution).
+
+We pull out the previous four require statements in our `transferFrom` function and put them in our new `_isApprovedOrOwner` function since multiple functions will need the same four `require()` statements. 
+(_See transferFrom and 2nd safeTransferFrom functions_)
+
+
+new `_isApprovedOrOwner` function: 
+
+```js
+
+// (00:34): https://academy.moralis.io/lessons/safetransferfrom-assignment-solution
+    function _isApprovedOrOwner(address _spender, address _from, address _to, uint256 _tokenId) internal view returns (bool){
+        require(_tokenId < kitties.length); //Token must exist
+        require(_to != address(0)); //check TO address is not zero address.
+        require(_owns(_from, _tokenId)); //From owns the token
+            
+//(00:57): https://academy.moralis.io/lessons/safetransferfrom-assignment-solution
+        // _spender is from OR _spender is apperoved for tokenId OR _spender is operator for _from
+        require(_spender == _from || _approvedFor(msg.sender, _tokenId) || isApprovedForAll(_from, msg.sender)); 
+//ORIGINAL version in old transferFrom function:         
+        // check sender is owner    or sender has approval for tokenId   or msg.sender is an operator for from  (1:05)
+        // require(msg.sender == _from || _approvedFor(msg.sender, _tokenId) || isApprovedForAll(_from, msg.sender)); 
+        
+        
+    }
+
+```

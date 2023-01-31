@@ -48,14 +48,15 @@ contract Kittycontract is IERC721, Ownable {
 
 
 //Safe Transfer from: https://academy.moralis.io/lessons/assignment-erc721-fulfillment-transferfrom
-
-    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes calldata data) external {
-
+// DOUBLE safeTransferFrom (public and internal) solution: https://academy.moralis.io/lessons/safetransferfrom-assignment-solution
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId) public {
+        safeTransferFrom(_from, _to, _tokenId, ""); 
     }
 
-
-    function safeTransferFrom(address _from, address _to, uint256 _tokenId) external {
-
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes memory _data) public {
+    // function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes calldata data) external {
+        require( _isApprovedOrOwner(msg.sender, _from, _to, _tokenId) ); 
+        _safeTransfer(_from, _to, _tokenId, _data); 
     }
 
 
@@ -68,15 +69,17 @@ contract Kittycontract is IERC721, Ownable {
 
     }
 
-    function transferFrom(address _from, address _to, uint256 _tokenId) external {
-        require(_to != address(0)); //check to address is not addy zero.
+    function transferFrom(address _from, address _to, uint256 _tokenId) public { 
+    // function transferFrom(address _from, address _to, uint256 _tokenId) external {
 
+        require( _isApprovedOrOwner(msg.sender, _from, _to, _tokenId)); 
+ //EXTRACTED our four require statements into one internal _isApprovedOrOwner at bottom of contract. 
+ // (00:34): https://academy.moralis.io/lessons/safetransferfrom-assignment-solution     
+        // require(_to != address(0)); //check to address is not addy zero.
             // check sender is owner    or sender has approval for tokenId   or msg.sender is an operator for from  (1:05)
-        require(msg.sender == _from || _approvedFor(msg.sender, _tokenId) || isApprovedForAll(_from, msg.sender)); 
-
-        require(_owns(_from, _tokenId)); 
-
-        require(_tokenId < kitties.length); 
+        // require(msg.sender == _from || _approvedFor(msg.sender, _tokenId) || isApprovedForAll(_from, msg.sender)); 
+        // require(_owns(_from, _tokenId)); 
+        // require(_tokenId < kitties.length);
 
          _transfer(_from, _to, _tokenId);
     }
@@ -267,6 +270,22 @@ contract Kittycontract is IERC721, Ownable {
             size := extcodesize(_to) //gets size and saves to our uint32 var
         }
         return size > 0; //true if bigger, false if not, meaning not a smart contract.
+    }
+
+// (00:34): https://academy.moralis.io/lessons/safetransferfrom-assignment-solution
+    function _isApprovedOrOwner(address _spender, address _from, address _to, uint256 _tokenId) internal view returns (bool){
+        require(_tokenId < kitties.length); //Token must exist
+        require(_to != address(0)); //check TO address is not zero address.
+        require(_owns(_from, _tokenId)); //From owns the token
+            
+//(00:57): https://academy.moralis.io/lessons/safetransferfrom-assignment-solution
+        // _spender is from OR _spender is apperoved for tokenId OR _spender is operator for _from
+        require(_spender == _from || _approvedFor(msg.sender, _tokenId) || isApprovedForAll(_from, msg.sender)); 
+//ORIGINAL version in old transferFrom function:         
+        // check sender is owner    or sender has approval for tokenId   or msg.sender is an operator for from  (1:05)
+        // require(msg.sender == _from || _approvedFor(msg.sender, _tokenId) || isApprovedForAll(_from, msg.sender)); 
+        
+        
     }
 
 
