@@ -1,13 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0
 
 pragma solidity >=0.5.16 <0.9.0;  // pragma solidity ^0.5.12; //Hashlips prefers ^0.8.0 (this version & up) https://youtu.be/sngKPYfUgkc?t=1350
-    // Error: Truffle is currently using solc 0.5.16, but one or more of your contracts specify "pragma solidity >=0.7.0 <0.9.0".
-    //Please update your truffle config or pragma statement(s).
-    //(See https://trufflesuite.com/docs/truffle/reference/configuration#compiler-configuration for information on
-    //configuring Truffle to use a specific solc compiler version.)
 
 import "./IERC721.sol"; 
-// import ownable contract
+
 import "./Ownable.sol";     /* (2:05): https://academy.moralis.io/lessons/solution-new-get-kitty-assignment */
 
 import "./IERC721Receiver.sol"; //IERC721Receiver
@@ -53,6 +49,27 @@ contract Kittycontract is IERC721, Ownable {
     /* uint256 public constant CREATION_LIMIT_GEN0 = 10; */
     uint256 public gen0Counter;
 
+    function breed(uint256 _dadId, uint256 _mumId) public returns (uint256) {  //Added: https://academy.moralis.io/lessons/dna-mixing-assignment
+        //Check ownership
+        require(_owns(msg.sender, _dadId), "The user doesn't own the token"); 
+        require(_owns(msg.sender, _mumId), "The user doesn't own the token"); 
+        
+        //You got the DNA
+        ( uint256 dadDna,,,,uint256 DadGeneration ) = getKitty(_dadId);
+        ( uint256 mumDna,,,,uint256 DadGeneration ) = getKitty(_mumId);
+
+        uint256 newDna = _mixDna(dadDna, mumDna); 
+        
+        //Figure out the Generation
+        // if (DadGeneration < MumGeneration){
+
+        // }
+
+        //Create a new cat with the new properties, give it to the msg.sender
+
+    //mock up:
+    }
+
 
 // (3:08): supportsInterface: https://academy.moralis.io/lessons/erc165-implementation
 //VS code recommended `pure` instead of view but need clarification: 
@@ -88,14 +105,7 @@ contract Kittycontract is IERC721, Ownable {
     // function transferFrom(address _from, address _to, uint256 _tokenId) external {
 
         require( _isApprovedOrOwner(msg.sender, _from, _to, _tokenId)); 
- //EXTRACTED our four require statements into one internal _isApprovedOrOwner at bottom of contract. 
- // (00:34): https://academy.moralis.io/lessons/safetransferfrom-assignment-solution     
-        // require(_to != address(0)); //check to address is not addy zero.
-            // check sender is owner    or sender has approval for tokenId   or msg.sender is an operator for from  (1:05)
-        // require(msg.sender == _from || _approvedFor(msg.sender, _tokenId) || isApprovedForAll(_from, msg.sender)); 
-        // require(_owns(_from, _tokenId)); 
-        // require(_tokenId < kitties.length);
-
+ //EXTRACTED our four require statements into one internal _isApprovedOrOwner at bottom (00:34): https://academy.moralis.io/lessons/safetransferfrom-assignment-solution      
          _transfer(_from, _to, _tokenId);
     }
 
@@ -261,8 +271,7 @@ contract Kittycontract is IERC721, Ownable {
             //if NOT a smart contract (code size > 0), return true
             return true; //exits fn here (4:20) https://academy.moralis.io/lessons/assignment-safetransfer-implementation
         }
-
-                        
+                      
                         //execute onERC721Received function
                         //How call external contract only know (1) addy and (2) one of its functions
                         // 6th min: https://academy.moralis.io/lessons/assignment-safetransfer-implementation
@@ -302,5 +311,17 @@ contract Kittycontract is IERC721, Ownable {
         
         return true; //VS error: Add and explicit return
     }
+
+
+    function _mixDna(uint256 _dadDna, uint256 _mumDna) internal returns (uint256) {
+        //See Logic (4:15): https://academy.moralis.io/lessons/dna-mixing-assignment
+        uint256 firstHalf = _dadDna / 100000000; 
+        uint256 secondHalf = _mumDna % 100000000;
+
+        uint256 newDna = firstHalf * 100000000;
+        newDna = newDna + secondHalf; 
+        return newDna;
+    }
+
 
 } /*end of Kittycontract */ 

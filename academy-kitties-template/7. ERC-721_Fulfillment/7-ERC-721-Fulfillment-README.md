@@ -307,8 +307,32 @@ new `_isApprovedOrOwner` function:
 //ORIGINAL version in old transferFrom function:         
         // check sender is owner    or sender has approval for tokenId   or msg.sender is an operator for from  (1:05)
         // require(msg.sender == _from || _approvedFor(msg.sender, _tokenId) || isApprovedForAll(_from, msg.sender)); 
-        
-        
+               
     }
 
 ```
+
+
+### FINAL Step to be ERC721 Compliant - The ERC165
+
+https://academy.moralis.io/lessons/erc165-implementation
+
+[ERC165 Implementation](https://academy.moralis.io/lessons/erc165-implementation).
+
+
+Implemented two constants and a function `supportsInterface` to check if the `interfaceId` matches either the 165 or 761. 
+
+```js
+    bytes4 private constant _INTERFACE_ID_ERC721 = 0x80ac58cd;
+    bytes4 private constant _INTERFACE_ID_ERC165 = 0x01ffc9a7;
+
+// (3:08): supportsInterface: https://academy.moralis.io/lessons/erc165-implementation
+//VS code recommended `pure` instead of view but need clarification: 
+    // function supportsInterface(bytes4 _interfaceId) external pure returns (bool) {
+    function supportsInterface(bytes4 _interfaceId) external view returns (bool) {  
+        //Returns false if _interfaceId not one of the two constants defined above.
+        return ( _interfaceId == _INTERFACE_ID_ERC721 ||  _interfaceId == _INTERFACE_ID_ERC165); 
+    }
+
+```
+

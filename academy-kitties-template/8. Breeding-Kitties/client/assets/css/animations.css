@@ -1,0 +1,96 @@
+.movingHead {
+    animation: moveHead 3s infinite;
+    /* animation: moveHead 3s 3; (3 times then stop) */
+}
+
+@keyframes moveHead {
+    /* Define in Percentage from 0 - 100%
+    0% - start */
+    0% {
+        transform: rotate(0deg);
+    }
+    30% {
+        transform: rotate(10deg);
+    }
+    60% {
+        transform: rotate(-10deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+
+
+
+
+.movingTail {
+    animation: moveTail 1s infinite;
+    /* animation: moveHead 3s 3; (3 times then stop) */
+}
+
+@keyframes moveTail {
+    /* Define in Percentage from 0 - 100%
+    0% - start */
+    0% {
+        transform: rotate(0deg);
+    }
+    30% {
+        transform: rotate(30deg);
+    }
+    60% {
+        transform: rotate(-30deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+
+
+.moveRightEar {
+    animation: moveRightEar 1s infinite;
+    /* animation: moveHead 3s 3; (3 times then stop) */
+}
+
+@keyframes moveRightEar {
+    /* Define in Percentage from 0 - 100%
+    0% - start */
+    0% {
+        transform: rotate(0deg);
+    }
+    30% {
+        transform: rotate(15deg);
+    }
+    60% {
+        transform: rotate(-15deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+
+
+.moveLeftEar {
+    animation: moveLeftEar 1s infinite;
+    /* animation: moveHead 3s 3; (3 times then stop) */
+}
+
+@keyframes moveLeftEar {
+    /* Define in Percentage from 0 - 100%
+    0% - start */
+    0% {
+        transform: rotate(-85deg);
+        /* border-top: none; */
+    }
+    30% {
+        transform: rotate(-95deg);
+        /* border-top: 25px solid; */
+    }
+    60% {
+        transform: rotate(-90deg);
+        /* border-top: 50px solid; */
+    }
+    100% {
+        transform: rotate(-85);
+        /* border-top: 75px solid; */
+    }
+}
