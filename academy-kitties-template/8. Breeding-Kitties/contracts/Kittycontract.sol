@@ -55,6 +55,8 @@ contract Kittycontract is IERC721, Ownable {
         require(_owns(msg.sender, _mumId), "The user doesn't own the token"); 
         
         //You got the DNA
+        // Use empty commas here for the fields we don't need (1:09) https://academy.moralis.io/lessons/dna-mixing-assignment-solution
+        // reduces memory use
         ( uint256 dadDna,,,,uint256 DadGeneration ) = getKitty(_dadId);
         ( uint256 mumDna,,,,uint256 DadGeneration ) = getKitty(_mumId);
 
@@ -64,10 +66,19 @@ contract Kittycontract is IERC721, Ownable {
         // if (DadGeneration < MumGeneration){
 
         // }
-
+        uint256 kidGen = 0; 
+        if (DadGeneration < MumGeneration) {
+            kidGen = MumGeneration + 1;
+            kidGen /= 2;
+        } else if (DadGeneration > MumGeneration) {
+            kidGen = DadGeneration + 1;
+            kidGen /= 2;
+        } else {
+            kidGen = MumGeneration + 1;
+        }
+        
         //Create a new cat with the new properties, give it to the msg.sender
-
-    //mock up:
+        _createKitty(_mumId, _dadId, kidGen, newDna, msg.sender);
     }
 
 
@@ -144,7 +155,8 @@ contract Kittycontract is IERC721, Ownable {
 
 
 /*GetKitty Solution added getKitty: https://academy.moralis.io/lessons/getkitty-solution  */
-    function getKitty(uint256 _id) external view returns (
+// Change from external to public (00:51) in: https://academy.moralis.io/lessons/dna-mixing-assignment-solution
+    function getKitty(uint256 _id) public view returns (
         uint256 genes,
         uint256 birthTime,
         uint256 mumId,
