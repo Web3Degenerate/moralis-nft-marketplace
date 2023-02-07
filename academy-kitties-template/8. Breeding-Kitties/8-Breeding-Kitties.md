@@ -50,3 +50,60 @@ Updated `breed` function:
     }
 
 ```
+
+
+To save memory, we pass essentially empty arguments with just commas when calling `getKitty()` function for _dadId and _mumId: 
+```js
+        //You got the DNA
+        // Use empty commas here for the fields we don't need (1:09) https://academy.moralis.io/lessons/dna-mixing-assignment-solution
+        // reduces memory use
+        ( uint256 dadDna,,,,uint256 DadGeneration ) = getKitty(_dadId);
+        ( uint256 mumDna,,,,uint256 DadGeneration ) = getKitty(_mumId);
+
+//Could pass parameters if desired  ????
+        ( uint256 dadDna,uint256 genes,uint256 birthTime,uint256 mumId,uint256 DadGeneration ) = getKitty(_dadId);
+        ( uint256 mumDna,,,,uint256 DadGeneration ) = getKitty(_mumId);
+
+```
+
+The `getKitty` function has up to **five parameters**: 
+```js
+/*GetKitty Solution added getKitty: https://academy.moralis.io/lessons/getkitty-solution  */
+// Change from external to public (00:51) in: https://academy.moralis.io/lessons/dna-mixing-assignment-solution
+    function getKitty(uint256 _id) public view returns (
+        uint256 genes,
+        uint256 birthTime,
+        uint256 mumId,
+        uint256 dadId,
+        uint256 generation
+        // address owner  // owner NOT in the Kitty Struct defined above.
+    )
+     {
+         Kitty storage kitty = kitties[_id]; // saved as a pointer. Use storage instead memory (less space) (1:36): https://academy.moralis.io/lessons/getkitty-solution
+
+         birthTime = uint256(kitty.birthTime);
+         mumId = uint256(kitty.mumId);
+         dadId = uint256(kitty.dadId); 
+         generation = uint256(kitty.generation);
+         genes = kitty.genes;  
+
+        //  return (genes, birthTime, mumId, dadId, generation); //Alternate solution (00:58): https://academy.moralis.io/lessons/getkitty-solution
+     }
+
+```
+
+
+
+
+### Breeding Frontend
+
+
+**SKIP THIS LINK** (_Just background_)
+[Assignment - Breeding Frontend (Discussion outside our scope)](https://academy.moralis.io/lessons/assignment-breeding-frontend).
+
+Create a third page for `breeding` 
+
+
+
+
+

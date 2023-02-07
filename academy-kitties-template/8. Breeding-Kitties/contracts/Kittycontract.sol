@@ -58,7 +58,7 @@ contract Kittycontract is IERC721, Ownable {
         // Use empty commas here for the fields we don't need (1:09) https://academy.moralis.io/lessons/dna-mixing-assignment-solution
         // reduces memory use
         ( uint256 dadDna,,,,uint256 DadGeneration ) = getKitty(_dadId);
-        ( uint256 mumDna,,,,uint256 DadGeneration ) = getKitty(_mumId);
+        ( uint256 mumDna,,,,uint256 MumGeneration ) = getKitty(_mumId);
 
         uint256 newDna = _mixDna(dadDna, mumDna); 
         
@@ -67,9 +67,10 @@ contract Kittycontract is IERC721, Ownable {
 
         // }
         uint256 kidGen = 0; 
+        //Explained at (1:59) https://academy.moralis.io/lessons/dna-mixing-assignment-solution
         if (DadGeneration < MumGeneration) {
             kidGen = MumGeneration + 1;
-            kidGen /= 2;
+            kidGen /= 2; //Same as kidGen = kidGen / 2; 
         } else if (DadGeneration > MumGeneration) {
             kidGen = DadGeneration + 1;
             kidGen /= 2;
