@@ -1,3 +1,5 @@
+// see index.js in the repository here: https://github.com/Ivan-on-Tech-Academy/academy-cryptokitties/blob/dev/client/index.js
+
 // alert('hello from index.js'); // confirm connection. Run 'Live Server' in VS code from index.html
 
 // Added: https://academy.moralis.io/lessons/web3-js-start-coding

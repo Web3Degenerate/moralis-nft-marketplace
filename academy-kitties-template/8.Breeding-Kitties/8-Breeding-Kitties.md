@@ -1,5 +1,6 @@
 ## Breeding Kitties 
 
+[See the main project repo at](https://github.com/Ivan-on-Tech-Academy/academy-cryptokitties).
 
 [Start by Adding Breeding function to Kittycontract.sol](https://academy.moralis.io/lessons/dna-mixing-assignment). 
 
@@ -95,7 +96,7 @@ The `getKitty` function has up to **five parameters**:
 
 
 
-### Breeding Frontend
+## Breeding Frontend _See_ [See the main project repo at](https://github.com/Ivan-on-Tech-Academy/academy-cryptokitties).
 
 
 **SKIP THIS LINK** (_Just background_)
@@ -104,6 +105,24 @@ The `getKitty` function has up to **five parameters**:
 Create a third page for `breeding` 
 
 
+Initial Catalogue Page with Breeding Button Mockup: 
+![catalogue page mockup](https://i.imgur.com/rmU728s.png)
 
+`catalogue.html` page breed buttons loads `factory.html` 
+
+
+## Frontend Buttons
+
+Starts at [3:03](https://academy.moralis.io/lessons/cleanup-buttons-assignment).
+
+**RANDOM BUTTON**
+create random number with `Math.random()`
+
+
+Missing files for the front end [mentioned here](https://studygroup.moralis.io/t/missing-video-s-for-catalogue-and-k-factory/46261/2). and references [tutorial github here](https://github.com/Ivan-on-Tech-Academy/academy-cryptokitties).
+
+
+Command line - move file from current directory to a subdirectory
+Ran command: `mv buildCats.js catalogue` [From IBM blog](https://www.ibm.com/docs/en/aix/7.2?topic=m-mv-command).
 
 
