@@ -2,7 +2,7 @@
 
 [ERC721 Fulfillment - Approval](https://academy.moralis.io/lessons/erc721-fulfillment-approval).
 
-
+ 
 (1:35) Added this **mapping** to `Kittycontract.sol`:
 
 **Operator Approval or Approval for All** - 
